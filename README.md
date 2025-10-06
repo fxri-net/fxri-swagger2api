@@ -24,7 +24,7 @@ pnpm install @fxri/swagger2api
 ### 1. 生成接口代码
 
 ```bash
-npx @fxri/swagger2api
+npx swagger2api
 ```
 
 ### 2. 配置文件说明
@@ -52,7 +52,7 @@ npx @fxri/swagger2api
 
 ```bash
 # 生成接口代码
-npx @fxri/swagger2api [--config <path>]
+npx swagger2api [--config <path>]
 ```
 
 ## 📝 PNPM 脚本
@@ -62,7 +62,7 @@ npx @fxri/swagger2api [--config <path>]
 ```json
 {
   "scripts": {
-    "api": "@fxri/swagger2api",
+    "api": "swagger2api",
   }
 }
 ```
