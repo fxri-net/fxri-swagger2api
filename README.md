@@ -1,4 +1,4 @@
-# Swagger2API
+# @fxri/swagger2api
 
 基于 swagger-typescript-api，将 Swagger 文档自动转为 TypeScript 格式的 API 文件
 
@@ -13,10 +13,10 @@
 
 ```bash
 # 全局安装
-pnpm install -g swagger2api
+pnpm install -g @fxri/swagger2api
 
 # 项目依赖
-pnpm install swagger2api
+pnpm install @fxri/swagger2api
 ```
 
 ## 🚀 快速开始
@@ -24,7 +24,7 @@ pnpm install swagger2api
 ### 1. 生成接口代码
 
 ```bash
-npx swagger2api
+npx @fxri/swagger2api
 ```
 
 ### 2. 配置文件说明
@@ -52,7 +52,7 @@ npx swagger2api
 
 ```bash
 # 生成接口代码
-npx swagger2api [--config <path>]
+npx @fxri/swagger2api [--config <path>]
 ```
 
 ## 📝 PNPM 脚本
@@ -62,7 +62,7 @@ npx swagger2api [--config <path>]
 ```json
 {
   "scripts": {
-    "api": "swagger2api",
+    "api": "@fxri/swagger2api",
   }
 }
 ```

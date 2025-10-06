@@ -1,5 +1,5 @@
 {
-  "name": "swagger2api",
+  "name": "@fxri/swagger2api",
   "version": "1.0.0",
   "description": "基于 swagger-typescript-api，将 Swagger 文档自动转为 TypeScript 格式的 API 文件",
   "license": "MIT",
@@ -11,7 +11,7 @@
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "swagger2api": "./dist/index.js"
+    "@fxri/swagger2api": "./dist/index.js"
   },
   "files": [
     "dist",
