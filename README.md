@@ -46,6 +46,7 @@ npx swagger2api
 | `url` | string | - | Swagger JSON 文件路径或 URL |
 | `output` | string | `'./src/api'` | 生成代码的输出目录 |
 | `name` | string | `'index'` | 接口文件名称，后缀为ts |
+| `config` | string | `'.swaggerrc'` | 配置文件 |
 
 ## 🔧 CLI 命令
 

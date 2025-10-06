@@ -13,8 +13,17 @@
   "bin": {
     "swagger2api": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    ".swaggerrc",
+    "package.json"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pnpm build && node ./dist/index.js",
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "release": "pnpm build && npm publish"
   },
   "keywords": [],
   "packageManager": "pnpm@10.18.0",
@@ -25,7 +34,9 @@
   },
   "devDependencies": {
     "@types/node": "^24.2.0",
-    "@types/prompts": "^2.4.9"
+    "@types/prompts": "^2.4.9",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.3"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
