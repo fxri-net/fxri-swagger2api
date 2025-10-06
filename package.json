@@ -1,0 +1,19 @@
+{
+  "name": "swagger2api",
+  "version": "1.0.0",
+  "description": "基于swagger-typescript-api，将swagger文档转为ts格式的api文件",
+  "license": "MIT",
+  "author": {
+    "name": "唐启云",
+    "email": "tqy@fxri.net",
+    "url": "https://fxri.net:444/"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "packageManager": "pnpm@10.18.0",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}
