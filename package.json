@@ -8,11 +8,25 @@
     "email": "tqy@fxri.net",
     "url": "https://fxri.net:444/"
   },
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "swagger2api": "./dist/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "packageManager": "pnpm@10.18.0",
+  "dependencies": {
+    "axios": "^1.12.2",
+    "prompts": "^2.4.2",
+    "swagger-typescript-api": "^13.2.14"
+  },
+  "devDependencies": {
+    "@types/node": "^24.2.0",
+    "@types/prompts": "^2.4.9"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   }
