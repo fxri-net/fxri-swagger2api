@@ -29,7 +29,7 @@ if ([confs.param.url, confs.param.output, confs.param.name].includes(undefined))
 /** 数据集合 */
 let datas = {
   /** 文件 */
-  file: `${confs.param.output}/${confs.param.name}.json`,
+  file: `${confs.param.output}/${confs.param.name}-${new Date().getTime()}.json`,
   /** 枚举 */
   enum: {} as { [key: string]: number }
 }
@@ -55,10 +55,13 @@ function onGenerate(data: Defines["data"]) {
   console.log("就绪：", ...Object.entries(datas.enum).map((item) => item.join("-")))
   // 保存文档
   saveFile(datas.file, JSON.stringify(data))
+  // 生成接口
+  const param = ["--axios", `-n ${confs.param.name}.ts`, `-o ${confs.param.output}`, `-p ${datas.file}`, ...process.argv.filter((_item, index) => index > 1)]
+  console.log("执行：", execSync(`swagger-typescript-api generate ${param.join(" ")}`).toString())
+  // 删除文档
+  fs.unlinkSync(datas.file)
   // 保存配置
   saveFile(confs.file, JSON.stringify(confs.param, null, 4))
-  // 生成文档
-  console.log("执行：", execSync(`swagger-typescript-api generate --axios -n ${confs.param.name}.ts -o ${confs.param.output} -p ${datas.file}`).toString())
 }
 /** 运行 */
 function onRun(url = confs.param.url) {
