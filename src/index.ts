@@ -57,7 +57,7 @@ function onGenerate(data: Defines["data"]) {
   saveFile(datas.file, JSON.stringify(data))
   // 生成接口
   const param = ["--axios", `-n ${confs.param.name}.ts`, `-o ${confs.param.output}`, `-p ${datas.file}`, ...process.argv.filter((_item, index) => index > 1)]
-  console.log("执行：", execSync(`swagger-typescript-api generate ${param.join(" ")}`).toString())
+  console.log("执行：", execSync(`${path.resolve(import.meta.dirname, "../node_modules/.bin/swagger-typescript-api")} generate ${param.join(" ")}`).toString())
   // 删除文档
   fs.unlinkSync(datas.file)
   // 保存配置
