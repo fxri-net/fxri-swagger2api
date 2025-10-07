@@ -68,7 +68,7 @@ function onGenerate(data: Defines["data"]) {
   // 保存文档
   saveFile(datas.file, JSON.stringify(data))
   // 生成接口
-  const param = ["generate", "--axios", "-n", `${confs.param.name}.ts`, "-o", path.resolve(confs.param.output), "-p", datas.file, ...datas.param]
+  const param = ["generate", "-n", `${confs.param.name}.ts`, "-o", path.resolve(confs.param.output), "-p", datas.file, ...datas.param]
   console.log("执行：", execSync(`${datas.script} ${param.join(" ")}`, { cwd: datas.home }).toString())
   // 删除文档
   fs.unlinkSync(datas.file)
