@@ -32,8 +32,6 @@ if ([confs.param.url, confs.param.output, confs.param.name].includes(undefined))
   console.log("失败：手动退出")
   process.exit()
 }
-// 补全路径
-confs.param.output = path.resolve(confs.param.output)
 /** 数据集合 */
 let datas = {
   /** 用户目录 */
@@ -70,7 +68,7 @@ function onGenerate(data: Defines["data"]) {
   // 保存文档
   saveFile(datas.file, JSON.stringify(data))
   // 生成接口
-  const param = ["generate", "--axios", "-n", `${confs.param.name}.ts`, "-o", confs.param.output, "-p", datas.file, ...datas.param]
+  const param = ["generate", "--axios", "-n", `${confs.param.name}.ts`, "-o", path.resolve(confs.param.output), "-p", datas.file, ...datas.param]
   console.log("执行：", execSync(`${datas.script} ${param.join(" ")}`, { cwd: datas.home }).toString())
   // 删除文档
   fs.unlinkSync(datas.file)
