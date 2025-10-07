@@ -1,6 +1,6 @@
 # @fxri/swagger2api
 
-基于 swagger-typescript-api，将 Swagger 文档自动转为 TypeScript 格式的 API 文件
+基于 swagger-typescript-api，将 Swagger 文档自动转为 TypeScript 格式的 API 文件。
 
 ## ✨ 特性
 
