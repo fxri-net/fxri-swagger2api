@@ -1,6 +1,6 @@
 {
   "name": "@fxri/swagger2api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "基于 swagger-typescript-api，将 Swagger 文档自动转为 TypeScript 格式的 API 文件",
   "license": "MIT",
   "author": {
@@ -40,5 +40,13 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
+  },
+  "homepage": "https://github.com/fxri-net/fxri-swagger2api#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fxri-net/fxri-swagger2api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fxri-net/fxri-swagger2api/issues"
   }
 }
