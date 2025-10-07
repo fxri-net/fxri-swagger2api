@@ -1,5 +1,6 @@
 import axios from "axios"
 import { execSync } from "node:child_process"
+import os from "node:os"
 import fs from "node:fs"
 import path from "node:path"
 import prompts from "prompts"
@@ -11,7 +12,12 @@ type Defines = {
   [key: string]: any
 }
 /** 配置集合 */
-let confs = { file: path.resolve(getParam("--config") ?? ".swaggerrc"), param: {} as { url?: string; output?: string; name?: string } }
+let confs = {
+  /** 文件 */
+  file: path.resolve(getParam("--config") ?? ".swaggerrc"),
+  /** 参数 */
+  param: {} as { url?: string; output?: string; name?: string }
+}
 try {
   confs.param = JSON.parse(fs.readFileSync(confs.file, "utf-8"))
 } catch (error) {}
@@ -26,10 +32,18 @@ if ([confs.param.url, confs.param.output, confs.param.name].includes(undefined))
   console.log("失败：手动退出")
   process.exit()
 }
+// 补全路径
+confs.param.output = path.resolve(confs.param.output)
 /** 数据集合 */
 let datas = {
+  /** 用户目录 */
+  home: os.homedir(),
+  /** 脚本 */
+  script: path.resolve(import.meta.dirname, "../node_modules/.bin/swagger-typescript-api"),
+  /** 参数 */
+  param: process.argv.filter((_item, index) => index > 1),
   /** 文件 */
-  file: `${confs.param.output}/${confs.param.name}-${new Date().getTime()}.json`,
+  file: path.resolve(`${confs.param.output}/${confs.param.name}-${new Date().getTime()}.json`),
   /** 枚举 */
   enum: {} as { [key: string]: number }
 }
@@ -56,8 +70,8 @@ function onGenerate(data: Defines["data"]) {
   // 保存文档
   saveFile(datas.file, JSON.stringify(data))
   // 生成接口
-  const param = ["--axios", `-n ${confs.param.name}.ts`, `-o ${confs.param.output}`, `-p ${datas.file}`, ...process.argv.filter((_item, index) => index > 1)]
-  console.log("执行：", execSync(`${path.resolve(import.meta.dirname, "../node_modules/.bin/swagger-typescript-api")} generate ${param.join(" ")}`).toString())
+  const param = ["generate", "--axios", "-n", `${confs.param.name}.ts`, "-o", confs.param.output, "-p", datas.file, ...datas.param]
+  console.log("执行：", execSync(`${datas.script} ${param.join(" ")}`, { cwd: datas.home }).toString())
   // 删除文档
   fs.unlinkSync(datas.file)
   // 保存配置
@@ -71,7 +85,7 @@ function onRun(url = confs.param.url) {
     axios
       .get(url)
       .then((res) => onGenerate(res.data))
-      .catch((err) => console.log("失败：", err.status ? `接口异常，状态码${err.status}` : err))
+      .catch((err) => console.log("失败：", err))
   } else {
     try {
       // 读取文档
