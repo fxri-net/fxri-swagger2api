@@ -2,6 +2,7 @@ import axios from "axios"
 import { execSync } from "node:child_process"
 import os from "node:os"
 import fs from "node:fs"
+import url from "node:url"
 import path from "node:path"
 import prompts from "prompts"
 import { getParam, isUrl, saveFile } from "./utils/index.js"
@@ -37,7 +38,7 @@ let datas = {
   /** 用户目录 */
   home: os.homedir(),
   /** 脚本 */
-  script: path.resolve(import.meta.dirname, "../node_modules/.bin/swagger-typescript-api"),
+  script: path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), "../node_modules/.bin/swagger-typescript-api"),
   /** 参数 */
   param: process.argv.filter((_item, index) => index > 1),
   /** 文件 */
