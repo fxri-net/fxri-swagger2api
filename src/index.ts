@@ -15,7 +15,7 @@ type Defines = {
 /** 配置集合 */
 let confs = {
   /** 文件 */
-  file: path.resolve(getParam("--config") ?? ".swaggerrc"),
+  file: path.resolve(getParam(["--config", "-c"]) ?? ".swaggerrc"),
   /** 参数 */
   param: {} as { url?: string; output?: string; name?: string }
 }

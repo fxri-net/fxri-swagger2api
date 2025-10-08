@@ -53,7 +53,7 @@ npx swagger2api
 
 ```bash
 # 生成接口代码
-npx swagger2api [--config <path>]
+npx swagger2api [--config <path>, -c <path>]
 ```
 
 ## 📝 PNPM 脚本
