@@ -5,7 +5,7 @@ import fs from "node:fs"
 import url from "node:url"
 import path from "node:path"
 import prompts from "prompts"
-import { getParam, isUrl, saveFile } from "./utils/index.js"
+import { getParam, getParamList, isUrl, saveFile } from "./utils/index.js"
 /** 定义集合 */
 type Defines = {
   /** 数据 */
@@ -39,8 +39,6 @@ let datas = {
   home: os.homedir(),
   /** 脚本 */
   script: path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), "../node_modules/.bin/swagger-typescript-api"),
-  /** 参数 */
-  param: process.argv.filter((_item, index) => index > 1),
   /** 文件 */
   file: path.resolve(`${confs.param.output}/${confs.param.name}-${new Date().getTime()}.json`),
   /** 枚举 */
@@ -53,23 +51,34 @@ function onGenerate(data: Defines["data"]) {
   // 处理数据
   Object.entries(data.paths).forEach((item) => {
     Object.keys(item[1]).forEach((item2) => {
-      data.paths[item[0]][item2].operationId = `${item[0]}/${item2}`
-        .replace(/([^\}]\/)get$/, "$1query")
-        .replace(/\/\{.+?\}/, "")
-        .replace(/^\/[^\/]*/, "")
-      const last = data.paths[item[0]][item2].operationId.split("/")
-      if (typeof datas.enum[last.slice(-1)] == "number") {
-        datas.enum[last.slice(-1)]++
-      } else {
-        datas.enum[last.slice(-1)] = 1
+      // 配置操作id
+      let id = `${item[0]}/${item2}`
+      // 转换无{.+}get为query
+      if (getParam(["--convert-get", "-cg"], false)) {
+        id = id.replace(/([^\}]\/)get$/g, "$1query")
       }
+      // 移除参数
+      if (getParam(["--remove-param", "-rp"], false)) {
+        id = id.replace(/\/\{.+?\}/g, "")
+      }
+      // 移除前缀索引
+      if (getParam(["--remove-prefix-index", "-rpi"])) {
+        let ids = id.split("/")
+        ids = ids.slice(0, 1).concat(ids.slice(Number(getParam(["--remove-prefix-index", "-rpi"])) + 2))
+        id = ids.join("/")
+      }
+      // 配置操作id
+      data.paths[item[0]][item2].operationId = id
+      // 统计请求方式
+      const method = id.split("/").slice(-1)[0]
+      typeof datas.enum[method] == "number" ? datas.enum[method]++ : (datas.enum[method] = 1)
     })
   })
   console.log("就绪：", ...Object.entries(datas.enum).map((item) => item.join("-")))
   // 保存文档
   saveFile(datas.file, JSON.stringify(data))
   // 生成接口
-  const param = ["generate", "-n", `${confs.param.name}.ts`, "-o", path.resolve(confs.param.output), "-p", datas.file, ...datas.param]
+  const param = ["generate", "-n", `${confs.param.name}.ts`, "-o", path.resolve(confs.param.output), "-p", datas.file, ...getParamList(false)]
   console.log("执行：", execSync(`${datas.script} ${param.join(" ")}`, { cwd: datas.home }).toString())
   // 删除文档
   fs.unlinkSync(datas.file)
