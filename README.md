@@ -78,12 +78,12 @@ npx swagger2api [--remove-prefix-index,-rpi <number>]
 
 在 `package.json` 中添加：
 
-生成 axios http 客户端，生成有关请求响应的附加信息
+生成 axios http 客户端，生成有关请求响应的附加信息，移除第一个前缀索引
 
 ```json
 {
   "scripts": {
-    "api": "swagger2api --axios --responses",
+    "api": "swagger2api --axios --responses --remove-prefix-index 0",
   }
 }
 ```

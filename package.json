@@ -1,6 +1,6 @@
 {
   "name": "@fxri/swagger2api",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "基于 swagger-typescript-api，将 Swagger 文档自动转为 TypeScript 格式的 API 文件。",
   "license": "MIT",
   "author": {
@@ -24,7 +24,7 @@
     "prebuild": "rimraf dist",
     "build": "tsc",
     "release": "pnpm build && pnpm publish",
-    "api": "pnpm dev --axios --responses"
+    "api": "pnpm dev --axios --responses --remove-prefix-index 0"
   },
   "keywords": [],
   "packageManager": "pnpm@10.18.0",
