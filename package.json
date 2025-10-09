@@ -23,7 +23,8 @@
     "dev": "pnpm build && node ./dist/index.js",
     "prebuild": "rimraf dist",
     "build": "tsc",
-    "release": "pnpm build && pnpm publish"
+    "release": "pnpm build && pnpm publish",
+    "api": "pnpm dev --axios --responses"
   },
   "keywords": [],
   "packageManager": "pnpm@10.18.0",
