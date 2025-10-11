@@ -4,8 +4,10 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "declaration": true,
-    "outDir": "./dist"
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "declaration": true
   },
-  "include": ["./src"]
+  "include": ["./src"],
+  "exclude": ["node_modules", "dist", "**/__tests__", "**/*.test.ts", "**/*.spec.ts"]
 }

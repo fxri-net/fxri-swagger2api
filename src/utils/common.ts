@@ -46,6 +46,24 @@ export function getParam(name: string | string[], next = true, use = true) {
   return data
 }
 /**
+ * 获取参数索引键
+ * @param name 参数名称
+ * @param use 配置已使用
+ * @return 选中的参数
+ */
+export function getParamKey(name: string | string[], use = true) {
+  return getParam(name, false, use) as boolean
+}
+/**
+ * 获取参数索引值
+ * @param name 参数名称
+ * @param use 配置已使用
+ * @return 选中的参数
+ */
+export function getParamValue(name: string | string[], use = true) {
+  return getParam(name, true, use) as string
+}
+/**
  * 获取参数列表
  * @param used 是否已使用
  * @return 参数数组
