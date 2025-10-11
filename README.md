@@ -54,6 +54,8 @@ npx swagger2api
 | `--remove-prefix-index,-rpi` | number | `-1` | 移除前缀索引 |
 | `--remove-d.ts,-rd` | boolean | `false` | 移除使用--js参数时生成的d.ts文件 |
 
+扩展：[更多 swagger-typescript-api 配置选项](https://fig.io/manual/swagger-typescript-api)
+
 ## 🔧 CLI 命令
 
 ```bash
