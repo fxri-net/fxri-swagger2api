@@ -24,8 +24,14 @@ pnpm install @fxri/swagger2api
 
 ### 1. 生成接口代码
 
+如果没装过其他名字叫 swagger2api 的工具，那么在 shell 中直接使用就行，如果装过同名工具，则需要带上 @fxri 作用域
+
 ```bash
 npx swagger2api
+```
+
+```bash
+npx @fxri/swagger2api
 ```
 
 ### 2. 配置文件说明
@@ -39,6 +45,19 @@ npx swagger2api
     "name": "index"
 }
 ```
+
+### 3. 调用接口
+
+直接调用生成的API类方法：
+
+```typescript
+import { Api } from "./index"
+
+const api = new Api()
+api.getUsers().then((res) => console.log(res))
+```
+
+每个方法会返回 Promise，可通过 async/await 或 .then() 处理响应
 
 ## ⚙️ 配置选项
 
@@ -60,32 +79,50 @@ npx swagger2api
 
 ```bash
 # 自定义配置文件
+
 npx swagger2api [--config,-c <path>]
+
+npx @fxri/swagger2api [--config,-c <path>]
 ```
 
 ```bash
 # 快速模式，直接使用配置文件参数，若配置文件不存在或者参数不全，则不会进入该模式
+
 npx swagger2api [--quick,-q] [--quick,-q <boolean>]
+
+npx @fxri/swagger2api [--quick,-q] [--quick,-q <boolean>]
 ```
 
 ```bash
 # 转换无{.+}get为query
+
 npx swagger2api [--convert-get,-cg] [--convert-get,-cg <boolean>]
+
+npx @fxri/swagger2api [--convert-get,-cg] [--convert-get,-cg <boolean>]
 ```
 
 ```bash
 # 移除{.+}参数
+
 npx swagger2api [--remove-param,-rp] [--remove-param,-rp <boolean>]
+
+npx @fxri/swagger2api [--remove-param,-rp] [--remove-param,-rp <boolean>]
 ```
 
 ```bash
 # 移除前缀索引
+
 npx swagger2api [--remove-prefix-index,-rpi <number>]
+
+npx @fxri/swagger2api [--remove-prefix-index,-rpi <number>]
 ```
 
 ```bash
 # 移除使用--js参数时生成的d.ts文件
+
 npx swagger2api [--remove-d.ts,-rd] [--remove-d.ts,-rd <boolean>]
+
+npx @fxri/swagger2api [--remove-d.ts,-rd] [--remove-d.ts,-rd <boolean>]
 ```
 
 ## 📝 PNPM 脚本
@@ -97,7 +134,13 @@ npx swagger2api [--remove-d.ts,-rd] [--remove-d.ts,-rd <boolean>]
 ```json
 {
   "scripts": {
-    "api": "swagger2api --axios --responses --remove-prefix-index 0 --quick",
+    "api": "swagger2api --axios --responses --remove-prefix-index 0 --quick"
+  }
+}
+
+{
+  "scripts": {
+    "api": "npx @fxri/swagger2api --axios --responses --remove-prefix-index 0 --quick"
   }
 }
 ```
