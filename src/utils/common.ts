@@ -1,28 +1,64 @@
 import fs from "node:fs"
 import path from "node:path"
 /** 数据集合 */
-let datas = {
+const datas = {
   /** 参数 */
   param: process.argv.filter((_item, index) => index > 1),
   /** 已使用 */
   used: {} as { [key: number]: boolean }
 }
-/** 获取参数 */
+/**
+ * 获取参数
+ * @param name 参数名称
+ * @param next true取索引值，false取索引键
+ * @param use 配置已使用
+ * @return 选中的参数
+ */
 export function getParam(name: string | string[], next = true, use = true) {
   // 处理名称
   if (!Array.isArray(name)) name = [name]
-  // 查询索引
-  const index = datas.param.findLastIndex((item) => name.includes(item))
-  // 配置已使用
-  use && index >= 0 && Object.assign(datas.used, { [index]: true, [index + 1]: next })
+  // 配置数据
+  let data: boolean | string
+  // 查询参数
+  datas.param.forEach((item, index) => {
+    // 查询索引
+    if (!name.includes(item)) {
+      // 空值
+      return
+    } else if (next) {
+      // 取索引值
+      data = datas.param[index + 1]
+      // 配置已使用
+      use && Object.assign(datas.used, { [index + 1]: true })
+    } else if (["true", "false"].includes(datas.param[index + 1])) {
+      // 取索引键，但存在索引值的话，则取索引值
+      data = datas.param[index + 1].toLowerCase() == "true"
+      // 配置已使用
+      use && Object.assign(datas.used, { [index + 1]: true })
+    } else {
+      // 取索引键
+      data = true
+    }
+    // 配置已使用
+    use && Object.assign(datas.used, { [index]: true })
+  })
   // 返回参数
-  return index >= 0 ? datas.param[index + Number(next)] : undefined
+  return data
 }
-/** 获取参数列表 */
+/**
+ * 获取参数列表
+ * @param used 是否已使用
+ * @return 参数数组
+ */
 export function getParamList(used?: boolean) {
   return typeof used == "boolean" ? datas.param.filter((_item, index) => (used ? datas.used[index] : !datas.used[index])) : datas.param
 }
-/** 保存文件 */
+/**
+ * 保存文件
+ * @param file 文件地址
+ * @param data 数据
+ * @return 无返回数据
+ */
 export function saveFile(file, data) {
   // 获取目录
   const dir = path.dirname(file)

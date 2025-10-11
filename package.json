@@ -1,6 +1,6 @@
 {
   "name": "@fxri/swagger2api",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "基于 swagger-typescript-api，将 Swagger 文档自动转为 TypeScript 格式的 API 文件。",
   "license": "MIT",
   "author": {
@@ -36,6 +36,11 @@
   "devDependencies": {
     "@types/node": "^24.2.0",
     "@types/prompts": "^2.4.9",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-vue": "^9.0.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.9.3"
   },

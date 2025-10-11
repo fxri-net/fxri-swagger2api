@@ -48,10 +48,11 @@ npx swagger2api
 | `output` | string | `'./src/api'` | 生成代码的输出目录 |
 | `name` | string | `'index'` | 接口文件名称，默认后缀为ts |
 | `--config,-c` | string | `'.swaggerrc'` | 配置文件 |
-| `--convert-get,-cg` | void | `-` | 转换无{.+}get为query |
-| `--remove-param,-rp` | void | `-` | 移除{.+}参数 |
+| `--quick,-q` | boolean | `false` | 快速模式，直接使用配置文件参数，若配置文件不存在或者参数不全，则不会进入该模式 |
+| `--convert-get,-cg` | boolean | `false` | 转换无{.+}get为query |
+| `--remove-param,-rp` | boolean | `false` | 移除{.+}参数 |
 | `--remove-prefix-index,-rpi` | number | `-1` | 移除前缀索引 |
-| `--remove-d.ts,-rd` | void | `-` | 移除使用--js参数时生成的d.ts文件 |
+| `--remove-d.ts,-rd` | boolean | `false` | 移除使用--js参数时生成的d.ts文件 |
 
 ## 🔧 CLI 命令
 
@@ -61,13 +62,18 @@ npx swagger2api [--config,-c <path>]
 ```
 
 ```bash
+# 快速模式，直接使用配置文件参数，若配置文件不存在或者参数不全，则不会进入该模式
+npx swagger2api [--quick,-q] [--quick,-q <boolean>]
+```
+
+```bash
 # 转换无{.+}get为query
-npx swagger2api [--convert-get,-cg]
+npx swagger2api [--convert-get,-cg] [--convert-get,-cg <boolean>]
 ```
 
 ```bash
 # 移除{.+}参数
-npx swagger2api [--remove-param,-rp]
+npx swagger2api [--remove-param,-rp] [--remove-param,-rp <boolean>]
 ```
 
 ```bash
@@ -77,19 +83,19 @@ npx swagger2api [--remove-prefix-index,-rpi <number>]
 
 ```bash
 # 移除使用--js参数时生成的d.ts文件
-npx swagger2api [--remove-d.ts,-rd]
+npx swagger2api [--remove-d.ts,-rd] [--remove-d.ts,-rd <boolean>]
 ```
 
 ## 📝 PNPM 脚本
 
 在 `package.json` 中添加：
 
-生成 axios http 客户端，生成有关请求响应的附加信息，移除第一个前缀索引
+生成 axios http 客户端，生成有关请求响应的附加信息，移除第一个前缀索引，使用快速模式
 
 ```json
 {
   "scripts": {
-    "api": "swagger2api --axios --responses --remove-prefix-index 0",
+    "api": "swagger2api --axios --responses --remove-prefix-index 0 --quick",
   }
 }
 ```

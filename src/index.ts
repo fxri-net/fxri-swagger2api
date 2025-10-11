@@ -13,28 +13,31 @@ type Defines = {
   [key: string]: any
 }
 /** 配置集合 */
-let confs = {
+const confs = {
   /** 文件 */
-  file: path.resolve(getParam(["--config", "-c"]) ?? ".swaggerrc"),
+  file: path.resolve((getParam(["--config", "-c"]) as string) ?? ".swaggerrc"),
   /** 参数 */
   param: {} as { url?: string; output?: string; name?: string }
 }
 try {
   confs.param = JSON.parse(fs.readFileSync(confs.file, "utf-8"))
 } catch (error) {}
-// 输入配置
-confs.param = await prompts([
-  { name: "url", type: "text", message: "Swagger docs 地址:", initial: confs.param.url ?? "https://example.com/v3/api-docs" },
-  { name: "output", type: "text", message: "输出地址:", initial: confs.param.output ?? "./src/api" },
-  { name: "name", type: "text", message: "文件名:", initial: confs.param.name ?? "index" }
-])
+// 检查快速模式
+if (!getParam(["--quick", "-q"], false) || [confs.param.url, confs.param.output, confs.param.name].includes(undefined)) {
+  // 输入配置
+  confs.param = await prompts([
+    { name: "url", type: "text", message: "Swagger docs 地址:", initial: confs.param.url ?? "https://example.com/v3/api-docs" },
+    { name: "output", type: "text", message: "输出地址:", initial: confs.param.output ?? "./src/api" },
+    { name: "name", type: "text", message: "文件名:", initial: confs.param.name ?? "index" }
+  ])
+}
 // 检查配置
 if ([confs.param.url, confs.param.output, confs.param.name].includes(undefined)) {
   console.log("失败：手动退出")
   process.exit()
 }
 /** 数据集合 */
-let datas = {
+const datas = {
   /** 用户目录 */
   home: os.homedir(),
   /** 脚本 */
