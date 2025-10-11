@@ -77,11 +77,18 @@ function onGenerate(data: Defines["data"]) {
   console.log("就绪：", ...Object.entries(datas.enum).map((item) => item.join("-")))
   // 保存文档
   saveFile(datas.file, JSON.stringify(data))
+  // 获取移除文件参数
+  const rd = getParam(["--remove-d.ts", "-rd"], false)
   // 生成接口
   const param = ["generate", "-n", `${confs.param.name}.ts`, "-o", path.resolve(confs.param.output), "-p", datas.file, ...getParamList(false)]
   console.log("执行：", execSync(`${datas.script} ${param.join(" ")}`, { cwd: datas.home }).toString())
   // 删除文档
   fs.unlinkSync(datas.file)
+  // 移除使用--js参数时生成的d.ts文件
+  if (rd) {
+    console.log("移除：", path.resolve(confs.param.output, `${confs.param.name}.d.ts`))
+    execSync(`npx rimraf ${path.resolve(confs.param.output, `${confs.param.name}.d.ts`)}`, { cwd: datas.home }).toString()
+  }
   // 保存配置
   saveFile(confs.file, JSON.stringify(confs.param, null, 4))
 }
