@@ -24,7 +24,7 @@
 
 ### 多文档配置
 
-1.默认配置文档为saconfig.json，项目启动后会扫描当前项目下的所有符合【./**/saconfig*.json】规则的文件（如【saconfig.json】【saconfig.admin.json】【config/saconfig.json】等），并在扫描到多个文件是提供选择列表，如只有一个文件，则直接进入下一步，该功能可在配置项中关闭。
+1.默认配置文件为saconfig.json，项目启动后会扫描当前项目下所有符合【./**/saconfig*.json】规则的文件（如【saconfig.json】【saconfig.admin.json】【config/saconfig.json】等），并在扫描到多个文件时提供选择列表，如只有一个文件，则直接进入下一步，该功能可在配置项中关闭。
 
 2.此功能扩展使用的话，可以作为一个独立工具使用，同时管理多个项目的接口配置。
 
