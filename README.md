@@ -107,7 +107,7 @@ api.getUsers().then((res) => console.log(res))
 | `--convert-get,-cg` | boolean | `false` | 转换无{.+}get为query |
 | `--remove-param,-rp` | boolean | `false` | 移除{.+}参数 |
 | `--remove-prefix-index,-rpi` | number | `-1` | 移除前缀索引 |
-| `--remove-d.ts,-rd` | boolean | `false` | 移除使用--js参数时生成的d.ts文件 |
+| `--remove-dts,-rd` | boolean | `false` | 移除使用--js参数时生成的d.ts文件 |
 
 扩展：[更多 swagger-typescript-api 配置选项](https://fig.io/manual/swagger-typescript-api)
 
@@ -156,9 +156,9 @@ npx @fxri/swagger2api [--remove-prefix-index,-rpi <number>]
 ```bash
 # 移除使用--js参数时生成的d.ts文件
 
-npx swagger2api [--remove-d.ts,-rd] [--remove-d.ts,-rd <boolean>]
+npx swagger2api [--remove-dts,-rd] [--remove-dts,-rd <boolean>]
 
-npx @fxri/swagger2api [--remove-d.ts,-rd] [--remove-d.ts,-rd <boolean>]
+npx @fxri/swagger2api [--remove-dts,-rd] [--remove-dts,-rd <boolean>]
 ```
 
 ## 🤝 贡献

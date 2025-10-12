@@ -118,8 +118,6 @@ async function onGenerate(data: Defines["data"]) {
   console.log("就绪：", ...Object.entries(datas.enum).map((item) => item.join("-")))
   // 保存文档
   saveFile(datas.file, JSON.stringify(data))
-  // 获取移除文件参数
-  const rd = getParamKey(["--remove-d.ts", "-rd"])
   // 生成接口
   console.log("执行：")
   await generateApi({
@@ -161,7 +159,7 @@ async function onGenerate(data: Defines["data"]) {
   // 删除文档
   fs.unlinkSync(datas.file)
   // 移除使用--js参数时生成的d.ts文件
-  if (rd) {
+  if (getParamKey(["--remove-dts", "-rd"])) {
     console.log("清理：", path.resolve(confs.param.output, `${confs.param.name}.d.ts`))
     execSync(`npx rimraf ${path.resolve(confs.param.output, `${confs.param.name}.d.ts`)}`, { cwd: datas.home }).toString()
   }
