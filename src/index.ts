@@ -55,7 +55,7 @@ async function onLoadConfig() {
   if (getParamValue(["--config", "-c"])) {
     // 指定配置文件
     confs.files = getParamValue(["--config", "-c"]).split(",")
-  } else if (getParamKey(["--config-scan", "-cs"])) {
+  } else if (getParamKey(["--config-scan", "-cs"]) ?? true) {
     // 扫描配置文件
     confs.files = glob.sync(["./**/saconfig*.json"], { ignore: "node_modules/**" })
   }
