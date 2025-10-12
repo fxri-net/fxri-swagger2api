@@ -12,12 +12,48 @@
 
 ## 📦 安装
 
+pnpm
+
 ```bash
 # 全局安装
 pnpm install -g @fxri/swagger2api
+```
 
+```bash
 # 项目依赖
 pnpm install @fxri/swagger2api
+```
+
+yarn
+
+```bash
+# 全局安装
+yarn global add @fxri/swagger2api
+```
+
+```bash
+# 项目依赖
+yarn add @fxri/swagger2api
+```
+
+## 📝 PNPM 脚本
+
+在 `package.json` 中添加：
+
+生成 axios http 客户端，生成有关请求响应的附加信息，移除第一个前缀索引，使用快速模式
+
+```json
+{
+  "scripts": {
+    "api": "swagger2api --axios --responses --remove-prefix-index 0 --quick"
+  }
+}
+
+{
+  "scripts": {
+    "api": "npx @fxri/swagger2api --axios --responses --remove-prefix-index 0 --quick"
+  }
+}
 ```
 
 ## 🚀 快速开始
@@ -123,26 +159,6 @@ npx @fxri/swagger2api [--remove-prefix-index,-rpi <number>]
 npx swagger2api [--remove-d.ts,-rd] [--remove-d.ts,-rd <boolean>]
 
 npx @fxri/swagger2api [--remove-d.ts,-rd] [--remove-d.ts,-rd <boolean>]
-```
-
-## 📝 PNPM 脚本
-
-在 `package.json` 中添加：
-
-生成 axios http 客户端，生成有关请求响应的附加信息，移除第一个前缀索引，使用快速模式
-
-```json
-{
-  "scripts": {
-    "api": "swagger2api --axios --responses --remove-prefix-index 0 --quick"
-  }
-}
-
-{
-  "scripts": {
-    "api": "npx @fxri/swagger2api --axios --responses --remove-prefix-index 0 --quick"
-  }
-}
 ```
 
 ## 🤝 贡献
