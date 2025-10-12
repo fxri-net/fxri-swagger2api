@@ -16,11 +16,11 @@ importers:
         version: 2.4.2
       swagger-typescript-api:
         specifier: ^13.2.15
-        version: 13.2.15(@biomejs/wasm-bundler@2.2.5)(@biomejs/wasm-web@2.2.5)
+        version: 13.2.15
     devDependencies:
       '@types/node':
         specifier: ^24.7.1
-        version: 24.7.1
+        version: 24.7.2
       '@types/prompts':
         specifier: ^2.4.9
         version: 2.4.9
@@ -62,14 +62,8 @@ packages:
       '@biomejs/wasm-web':
         optional: true
 
-  '@biomejs/wasm-bundler@2.2.5':
-    resolution: {integrity: sha512-Lik6aryVxOnBL9/JqAPIP+cHuVX7tG+MJYGIMxYb7TKjuuoXdEJ5eydybe0u3fOmrBoIEfDmaU7DzoSLb4wc8g==}
-
   '@biomejs/wasm-nodejs@2.2.5':
     resolution: {integrity: sha512-p9BhDKyjyemt9aBOaqINrsTJSWiCYZu1asM5AxfMFxF9Fi3L3ZcIbzxe5OYa294oNllmmqJ+68GlZG/2fqF0dQ==}
-
-  '@biomejs/wasm-web@2.2.5':
-    resolution: {integrity: sha512-sScybOpBDzOI0o2sFSr7PtXHLK8m05N7E0x8AlWgQE50WvWvtQaoac3q2tZ6xjXMgNb7gJ/AEnhpKn2g1gbIEg==}
 
   '@esbuild/aix-ppc64@0.25.10':
     resolution: {integrity: sha512-0NFWnA+7l41irNuaSVlLfgNT12caWJVLzp5eAVhZ0z1qpxbockccEt3s+149rE64VUI3Ml2zt8Nv5JVc4QXTsw==}
@@ -413,8 +407,8 @@ packages:
   '@types/lodash@4.17.20':
     resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
 
-  '@types/node@24.7.1':
-    resolution: {integrity: sha512-CmyhGZanP88uuC5GpWU9q+fI61j2SkhO3UGMUdfYRE6Bcy0ccyzn1Rqj9YAB/ZY4kOXmNf0ocah5GtphmLMP6Q==}
+  '@types/node@24.7.2':
+    resolution: {integrity: sha512-/NbVmcGTP+lj5oa4yiYxxeBjRivKQ5Ns1eSZeB99ExsEQ6rX5XYU1Zy/gGxY/ilqtD4Etx9mKyrPxZRetiahhA==}
 
   '@types/prompts@2.4.9':
     resolution: {integrity: sha512-qTxFi6Buiu8+50/+3DGIWLHM6QuWsEKugJnnP6iv2Mc4ncxE4A/OJkjuVOA+5X0X1S/nq5VJRa8Lu+nwcvbrKA==}
@@ -1508,19 +1502,11 @@ packages:
 
 snapshots:
 
-  '@biomejs/js-api@3.0.0(@biomejs/wasm-bundler@2.2.5)(@biomejs/wasm-nodejs@2.2.5)(@biomejs/wasm-web@2.2.5)':
+  '@biomejs/js-api@3.0.0(@biomejs/wasm-nodejs@2.2.5)':
     optionalDependencies:
-      '@biomejs/wasm-bundler': 2.2.5
       '@biomejs/wasm-nodejs': 2.2.5
-      '@biomejs/wasm-web': 2.2.5
-
-  '@biomejs/wasm-bundler@2.2.5':
-    optional: true
 
   '@biomejs/wasm-nodejs@2.2.5': {}
-
-  '@biomejs/wasm-web@2.2.5':
-    optional: true
 
   '@esbuild/aix-ppc64@0.25.10':
     optional: true
@@ -1747,13 +1733,13 @@ snapshots:
 
   '@types/lodash@4.17.20': {}
 
-  '@types/node@24.7.1':
+  '@types/node@24.7.2':
     dependencies:
       undici-types: 7.14.0
 
   '@types/prompts@2.4.9':
     dependencies:
-      '@types/node': 24.7.1
+      '@types/node': 24.7.2
       kleur: 3.0.3
 
   '@types/semver@7.7.1': {}
@@ -2733,9 +2719,9 @@ snapshots:
 
   swagger-schema-official@2.0.0-bab6bed: {}
 
-  swagger-typescript-api@13.2.15(@biomejs/wasm-bundler@2.2.5)(@biomejs/wasm-web@2.2.5):
+  swagger-typescript-api@13.2.15:
     dependencies:
-      '@biomejs/js-api': 3.0.0(@biomejs/wasm-bundler@2.2.5)(@biomejs/wasm-nodejs@2.2.5)(@biomejs/wasm-web@2.2.5)
+      '@biomejs/js-api': 3.0.0(@biomejs/wasm-nodejs@2.2.5)
       '@biomejs/wasm-nodejs': 2.2.5
       '@types/lodash': 4.17.20
       '@types/swagger-schema-official': 2.0.25

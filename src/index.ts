@@ -61,8 +61,6 @@ async function onInit() {
   datas = {
     /** 用户目录 */
     home: os.homedir(),
-    // /** 脚本 */
-    // script: path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), "../node_modules/.bin/swagger-typescript-api"),
     /** 文件 */
     file: path.resolve(`${confs.param.output}/${confs.param.name}-${new Date().getTime()}.json`),
     /** 枚举 */
@@ -177,5 +175,5 @@ async function onRun() {
   // 加载文档
   onLoad()
 }
-// 执行脚本
-onRun()
+// 导出方法
+export { onRun as generateApi }

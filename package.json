@@ -1,6 +1,6 @@
 {
   "name": "@fxri/swagger2api",
-  "version": "1.0.15",
+  "version": "1.1.0",
   "description": "基于 swagger-typescript-api，将 Swagger 文档自动转为 TypeScript 格式的 API 文件。",
   "license": "MIT",
   "author": {
@@ -10,7 +10,7 @@
   },
   "type": "module",
   "main": "./dist/index.js",
-  "bin": "./dist/index.js",
+  "bin": "./dist/bin/index.js",
   "files": [
     "dist",
     "README.md",
@@ -18,8 +18,9 @@
     "package.json"
   ],
   "scripts": {
-    "dev": "pnpm build && node ./dist/index.js",
-    "build": "tsup",
+    "dev": "pnpm build:debug && node ./dist/bin/index.js",
+    "build": "NODE_ENV=production tsup",
+    "build:debug": "NODE_ENV=development tsup",
     "release": "pnpm build && pnpm publish",
     "api": "pnpm dev --axios --responses --remove-prefix-index 0"
   },
@@ -40,6 +41,9 @@
     "eslint-plugin-vue": "^9.33.0",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
