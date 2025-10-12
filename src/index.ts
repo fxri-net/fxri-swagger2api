@@ -79,6 +79,8 @@ async function onLoadConfig() {
 /** 输入参数 */
 async function onInputParam() {
   try {
+    // 初始化配置
+    confs.param = {}
     // 读取配置文件
     confs.param = JSON.parse(fs.readFileSync(confs.file, "utf-8"))
   } catch (error) {}
