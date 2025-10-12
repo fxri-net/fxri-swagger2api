@@ -6,10 +6,13 @@ import path from "node:path"
 import prompts from "prompts"
 import { generateApi } from "swagger-typescript-api"
 import { getParamKey, getParamValue, isUrl, saveFile } from "./utils"
+import { glob } from "glob"
 /** 定义集合 */
 type Defines = {
   /** 配置集合 */
   confs: {
+    /** 文件集合 */
+    files: string[]
     /** 文件 */
     file: string
     /** 参数 */
@@ -19,8 +22,8 @@ type Defines = {
   datas: {
     /** 用户目录 */
     home: string
-    /** 文件 */
-    file: string
+    /** 文档 */
+    docFile: string
     /** 枚举 */
     enum: { [key: string]: number }
   }
@@ -28,19 +31,55 @@ type Defines = {
   data: { paths: { [key: string]: { [key: string]: any } }; [key: string]: any }
 }
 /** 配置集合 */
-let confs: Defines["confs"]
+const confs = {
+  /** 文件集合 */
+  files: [],
+  /** 参数 */
+  param: {} as { url?: string; output?: string; name?: string }
+} as Defines["confs"]
 /** 数据集合 */
-let datas: Defines["datas"]
-/** 初始化参数 */
-async function onInit() {
-  /** 配置集合 */
-  confs = {
-    /** 文件 */
-    file: path.resolve(getParamValue(["--config", "-c"]) ?? ".swaggerrc"),
-    /** 参数 */
-    param: {} as { url?: string; output?: string; name?: string }
+const datas = {
+  /** 用户目录 */
+  home: os.homedir(),
+  /** 枚举 */
+  enum: {} as { [key: string]: number }
+} as Defines["datas"]
+/** 退出 */
+function onExit(message?: string) {
+  message && console.log(message)
+  process.exit()
+}
+/** 加载配置 */
+async function onLoadConfig() {
+  // 疏理文件
+  if (getParamValue(["--config", "-c"])) {
+    // 指定配置文件
+    confs.files = getParamValue(["--config", "-c"]).split(",")
+  } else if (getParamKey(["--config-scan", "-cs"])) {
+    // 扫描配置文件
+    confs.files = glob.sync(["./**/saconfig*.json"], { ignore: "node_modules/**" })
   }
+  // 默认文件
+  if (confs.files.length == 0) confs.files = ["saconfig.json"]
+  // 选择文件
+  if (!getParamKey(["--config-all", "-ca"]) && confs.files.length > 1) {
+    confs.files = (
+      await prompts({
+        type: "multiselect",
+        name: "files",
+        message: "选择配置文件",
+        hint: "可多选，空格键勾选，回车完成",
+        choices: confs.files.map((item) => ({ title: item.replace(/\\/g, "/"), value: item }))
+      }).then((res) => (res.files?.length != 0 ? res : onExit("结束：至少选择一个配置文件")))
+    )["files"]
+  }
+  // 检查配置
+  if (!(confs.files?.length > 0)) onExit("结束：手动退出")
+}
+/** 输入参数 */
+async function onInputParam() {
   try {
+    // 读取配置文件
     confs.param = JSON.parse(fs.readFileSync(confs.file, "utf-8"))
   } catch (error) {}
   // 检查快速模式
@@ -53,40 +92,36 @@ async function onInit() {
     ])
   }
   // 检查配置
-  if ([confs.param.url, confs.param.output, confs.param.name].includes(undefined)) {
-    console.log("失败：手动退出")
-    process.exit()
-  }
-  /** 数据集合 */
-  datas = {
-    /** 用户目录 */
-    home: os.homedir(),
-    /** 文件 */
-    file: path.resolve(`${confs.param.output}/${confs.param.name}-${new Date().getTime()}.json`),
-    /** 枚举 */
-    enum: {} as { [key: string]: number }
-  }
+  if ([confs.param.url, confs.param.output, confs.param.name].includes(undefined)) onExit("结束：手动退出")
+  // 疏理文档
+  datas.docFile = path.resolve(`${confs.param.output}/${confs.param.name}-${new Date().getTime()}.json`)
 }
 /** 加载文档 */
-function onLoad(url = confs.param.url) {
+async function onLoadDoc(index = 0) {
+  // 疏理文件
+  confs.file = confs.files[index]
+  // 输入配置
+  await onInputParam()
   // 检查地址
-  if (isUrl(url)) {
+  if (isUrl(confs.param.url)) {
     // 请求文档
-    axios
-      .get(url)
-      .then((res) => onGenerate(res.data))
+    await axios
+      .get(confs.param.url)
+      .then((res) => onGenerateApi(res.data))
       .catch((err) => console.log("失败：", err))
   } else {
     try {
       // 读取文档
-      onGenerate(JSON.parse(fs.readFileSync(path.resolve(url), "utf8")))
+      await onGenerateApi(JSON.parse(fs.readFileSync(path.resolve(confs.param.url), "utf8")))
     } catch (error) {
       console.log("失败：", error)
     }
   }
+  // 加载下一个文档
+  confs.files[index + 1] && onLoadDoc(index + 1)
 }
 /** 生成接口 */
-async function onGenerate(data: Defines["data"]) {
+async function onGenerateApi(data: Defines["data"]) {
   // 检查格式
   if (typeof data?.paths != "object") return console.log("失败：缺少paths字段")
   // 处理数据
@@ -117,13 +152,13 @@ async function onGenerate(data: Defines["data"]) {
   })
   console.log("就绪：", ...Object.entries(datas.enum).map((item) => item.join("-")))
   // 保存文档
-  saveFile(datas.file, JSON.stringify(data))
+  saveFile(datas.docFile, JSON.stringify(data))
   // 生成接口
-  console.log("执行：")
+  console.log("执行：", confs.file)
   await generateApi({
     fileName: `${confs.param.name}.ts`, // 输出类型的 API 文件名称（默认："Api.ts"）
     output: path.resolve(confs.param.output), // TypeScript API 文件的输出路径（默认："./"）
-    input: datas.file, // 路径/链接到Swagger方案
+    input: datas.docFile, // 路径/链接到Swagger方案
     templates: getParamValue(["--templates", "-t"]), // 路径到包含模板的文件夹
     defaultResponseAsSuccess: getParamKey(["--default-as-success", "-d"]), // 将“默认”响应状态码也用作成功响应
     generateResponses: getParamKey(["--responses", "-r"]), // 生成有关请求响应的附加信息
@@ -157,21 +192,21 @@ async function onGenerate(data: Defines["data"]) {
     extractEnums: getParamKey("--extract-enums") // 从内联接口提取所有枚举类型 将内容提取到 typescript 枚举构造中（默认：false）
   })
   // 删除文档
-  fs.unlinkSync(datas.file)
+  fs.unlinkSync(datas.docFile)
   // 移除使用--js参数时生成的d.ts文件
   if (getParamKey(["--remove-dts", "-rd"])) {
     console.log("清理：", path.resolve(confs.param.output, `${confs.param.name}.d.ts`))
     execSync(`npx rimraf ${path.resolve(confs.param.output, `${confs.param.name}.d.ts`)}`, { cwd: datas.home }).toString()
   }
   // 保存配置
-  saveFile(confs.file, JSON.stringify(confs.param, null, 4))
+  saveFile(confs.file, JSON.stringify(confs.param, null, 2))
 }
-/** 运行 */
-async function onRun() {
-  // 初始化参数
-  await onInit()
+/** 主线 */
+async function onMain() {
+  // 加载配置
+  await onLoadConfig()
   // 加载文档
-  onLoad()
+  onLoadDoc()
 }
 // 导出方法
-export { onRun as generateApi }
+export { onMain as generateApi }
