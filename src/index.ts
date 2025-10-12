@@ -130,7 +130,7 @@ async function onGenerate(data: Defines["data"]) {
     generateUnionEnums: getParamKey("--union-enums"), // 生成所有“枚举”类型为联合类型 (T1 | T2 | TN)
     addReadonly: getParamKey("--add-readonly"), // 生成只读属性
     generateRouteTypes: getParamKey("--route-types"), // 生成 API 路由的类型定义
-    generateClient: getParamKey("--no-client"), // 不要生成API类
+    generateClient: !getParamKey("--no-client"), // 不要生成API类
     enumNamesAsValues: getParamKey("--enum-names-as-values"), // 使用'x-enumNames'中的值作为枚举值（而不仅仅是作为键）
     extractRequestParams: getParamKey("--extract-request-params"), // 提取请求参数到数据合同
     extractRequestBody: getParamKey("--extract-request-body"), // 将请求体类型提取到数据契约
@@ -146,10 +146,10 @@ async function onGenerate(data: Defines["data"]) {
     singleHttpClient: getParamKey("--single-http-client"), // 能够将HttpClient实例传递给Api构造函数（默认：false）
     silent: getParamKey("--silent"), // 仅将错误输出到控制台
     defaultResponseType: getParamValue("--default-response") ?? "void", // 默认类型为无响应模式
-    typePrefix: getParamValue("--type-prefix"), // 数据合同名称前缀
-    typeSuffix: getParamValue("--type-suffix"), // 数据合同名称后缀
+    typePrefix: getParamValue("--type-prefix") ?? "", // 数据合同名称前缀
+    typeSuffix: getParamValue("--type-suffix") ?? "", // 数据合同名称后缀
     cleanOutput: getParamKey("--clean-output"), // 在生成API之前清理输出文件夹。 警告：可能会导致数据丢失（默认：false）
-    apiClassName: getParamValue("--api-class-name "), // API类名
+    ...(getParamValue("--api-class-name") ? { apiClassName: getParamValue("--api-class-name") } : {}), // API类名
     patch: getParamKey("--patch"), // 修正Swagger源定义中的小错误（默认：false）
     debug: getParamKey("--debug"), // 此工具内进程的附加信息（默认：false）
     anotherArrayType: getParamKey("--another-array-type"), // 生成数组类型为 Array<Type>（默认为 Type[]）（默认：false）
