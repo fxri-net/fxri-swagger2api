@@ -96,9 +96,9 @@ npx @fxri/swagger2api
 
 ```json
 {
-    "url": "https://example.com/v3/api-docs",
-    "output": "./src/api",
-    "name": "index"
+  "url": "https://example.com/v3/api-docs",
+  "output": "./src/api",
+  "name": "index"
 }
 ```
 
