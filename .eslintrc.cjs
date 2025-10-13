@@ -65,6 +65,8 @@ module.exports = {
     "@typescript-eslint/no-this-alias": "off",
     // 关闭骆驼式变量名校验
     camelcase: "off",
-    "@typescript-eslint/camelcase": "off"
+    "@typescript-eslint/camelcase": "off",
+    // 关闭禁止使用不安全的类型
+    "@typescript-eslint/ban-types": "off"
   }
 }
