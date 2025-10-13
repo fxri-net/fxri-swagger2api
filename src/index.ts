@@ -72,6 +72,7 @@ async function onLoadParam() {
     removeParam: getParamKey(["--remove-param", "-rp"]),
     removePrefixIndex: getParamValue(["--remove-prefix-index", "-rpi"]),
     removeDts: getParamKey(["--remove-dts", "-rd"]),
+    extractRequestQuery: getParamValue(["--extract-request-query", "-erq"]),
     extractResponseRaw: getParamKey(["--extract-response-raw", "-err"])
   }
 }
