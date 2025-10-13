@@ -130,6 +130,7 @@ api.getUsers().then((res) => console.log(res))
 | `--remove-param,-rp` | boolean | `false` | 移除{.+}参数 |
 | `--remove-prefix-index,-rpi` | number | `-1` | 移除前缀索引 |
 | `--remove-dts,-rd` | boolean | `false` | 移除使用--js参数时生成的d.ts文件 |
+| `--axios-response-raw,-arr` | boolean | `false` | 定制响应，将AxiosResponse返回值转移到raw字段，根部字段自己定义 |
 
 扩展：[更多 swagger-typescript-api 配置选项](https://fig.io/manual/swagger-typescript-api)
 
@@ -149,39 +150,6 @@ npx @fxri/swagger2api [--quick,-q] [--quick,-q <boolean>]
 npx swagger2api [--config,-c <path>]
 
 npx @fxri/swagger2api [--config,-c <path>]
-```
-
-```bash
-# 加载全部配置文件，不进行选择
-
-npx swagger2api [--config-all,-ca] [--config-all,-ca <boolean>]
-
-npx @fxri/swagger2api [--config-all,-ca] [--config-all,-ca <boolean>]
-```
-
-```bash
-# 扫描全部配置文件，并提供选择列表，该参数默认为true
-
-npx swagger2api [--config-scan,-cs] [--config-scan,-cs <boolean>]
-
-npx @fxri/swagger2api [--config-scan,-cs] [--config-scan,-cs <boolean>]
-```
-
-```bash
-# 转换无{.+}get为query
-
-npx swagger2api [--convert-get,-cg] [--convert-get,-cg <boolean>]
-
-npx @fxri/swagger2api [--convert-get,-cg] [--convert-get,-cg <boolean>]
-```
-
-```bash
-# 移除{.+}参数
-
-npx swagger2api [--remove-param,-rp] [--remove-param,-rp <boolean>]
-
-npx @fxri/swagger2api [--remove-param,-rp] [--remove-param,-rp <boolean>]
-```
 
 ```bash
 # 移除前缀索引
@@ -189,14 +157,6 @@ npx @fxri/swagger2api [--remove-param,-rp] [--remove-param,-rp <boolean>]
 npx swagger2api [--remove-prefix-index,-rpi <number>]
 
 npx @fxri/swagger2api [--remove-prefix-index,-rpi <number>]
-```
-
-```bash
-# 移除使用--js参数时生成的d.ts文件
-
-npx swagger2api [--remove-dts,-rd] [--remove-dts,-rd <boolean>]
-
-npx @fxri/swagger2api [--remove-dts,-rd] [--remove-dts,-rd <boolean>]
 ```
 
 ## 🤝 贡献

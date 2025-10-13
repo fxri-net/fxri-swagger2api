@@ -21,7 +21,7 @@
     "build": "NODE_ENV=production tsup",
     "build:debug": "NODE_ENV=development tsup --config tsup.debug.config.ts",
     "release": "pnpm build && pnpm publish",
-    "api": "pnpm dev --axios --responses --remove-prefix-index 0"
+    "api": "pnpm dev --axios --responses --remove-prefix-index 0 --quick"
   },
   "keywords": [
     "swagger",
