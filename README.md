@@ -178,6 +178,7 @@ npx @fxri/swagger2api [--quick,-q] [--quick,-q <boolean>]
 npx swagger2api [--config,-c <path>]
 
 npx @fxri/swagger2api [--config,-c <path>]
+```
 
 ```bash
 # 移除前缀索引
