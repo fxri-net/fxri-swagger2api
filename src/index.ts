@@ -30,7 +30,7 @@ function onExit(message?: string) {
 async function onLoadParam() {
   /** 配置 */
   datas.config = {
-    templates: getParamKey(["--axios-response-raw", "-arr"]) ? "./src/templates/axios" : getParamValue(["--templates", "-t"]), // 路径到包含模板的文件夹
+    templates: getParamValue(["--templates", "-t"]) ?? "./src/templates", // 路径到包含模板的文件夹
     defaultResponseAsSuccess: getParamKey(["--default-as-success", "-d"]), // 将“默认”响应状态码也用作成功响应
     generateResponses: getParamKey(["--responses", "-r"]), // 生成有关请求响应的附加信息
     generateUnionEnums: getParamKey("--union-enums"), // 生成所有“枚举”类型为联合类型 (T1 | T2 | TN)
@@ -67,11 +67,12 @@ async function onLoadParam() {
     config: getParamValue(["--config", "-c"]),
     configScan: getParamKey(["--config-scan", "-cs"]),
     configAll: getParamKey(["--config-all", "-ca"]),
-    quick: getParamValue(["--quick", "-q"]),
+    quick: getParamKey(["--quick", "-q"]),
     convertGet: getParamKey(["--convert-get", "-cg"]),
     removeParam: getParamKey(["--remove-param", "-rp"]),
     removePrefixIndex: getParamValue(["--remove-prefix-index", "-rpi"]),
-    removeDts: getParamKey(["--remove-dts", "-rd"])
+    removeDts: getParamKey(["--remove-dts", "-rd"]),
+    axiosResponseRaw: getParamKey(["--axios-response-raw", "-arr"])
   }
 }
 /** 加载配置 */
@@ -186,7 +187,8 @@ async function onGenerateApi(data: Defines["data"]) {
     fileName: `${confs.param.name}.ts`, // 输出类型的 API 文件名称（默认："Api.ts"）
     output: path.resolve(confs.param.output), // TypeScript API 文件的输出路径（默认："./"）
     input: datas.docFile, // 路径/链接到Swagger方案
-    ...datas.config
+    ...datas.config,
+    ...{ param: datas.param }
   })
   // 删除文档
   fs.unlinkSync(datas.docFile)

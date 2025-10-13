@@ -27,7 +27,7 @@ export type Defines = {
       /** 加载全部配置文件 */
       configAll: boolean
       /** 快速模式 */
-      quick: string
+      quick: boolean
       /** 转换无{.+}get为query */
       convertGet: boolean
       /** 移除{.+}参数 */
@@ -36,6 +36,8 @@ export type Defines = {
       removePrefixIndex: string
       /** 移除使用--js参数时生成的d.ts文件 */
       removeDts: boolean
+      /** 定制响应，将AxiosResponse返回值转移到raw字段，根部字段自己定义 */
+      axiosResponseRaw: boolean
     }
     /** 枚举 */
     enum: { [key: string]: number }
