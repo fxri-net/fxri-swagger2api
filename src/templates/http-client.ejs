@@ -7,8 +7,8 @@ import axios from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
 
-<% if (config.param?.axiosResponseRaw) { %>
-/** 定制响应 */
+<% if (config.param?.extractResponseRaw) { %>
+/** 提取响应 */
 export interface AxiosResponseRaw<T = any> {
   /** 原始数据 */
   raw: AxiosResponse<T>;
@@ -117,7 +117,7 @@ export class HttpClient<SecurityDataType = unknown> {
         ...params
 <% if (config.unwrapResponseData) { %>
     }: FullRequestParams): Promise<T> => {
-<% } else if (config.param?.axiosResponseRaw) { %>
+<% } else if (config.param?.extractResponseRaw) { %>
     }: FullRequestParams): Promise<AxiosResponseRaw<T>> => {
 <% } else { %>
     }: FullRequestParams): Promise<AxiosResponse<T>> => {
@@ -146,7 +146,7 @@ export class HttpClient<SecurityDataType = unknown> {
             url: path,
 <% if (config.unwrapResponseData) { %>
         }).then(response => response.data);
-<% } else if (config.param?.axiosResponseRaw) { %>
+<% } else if (config.param?.extractResponseRaw) { %>
         }).then(response => { raw: response });
 <% } else { %>
         });

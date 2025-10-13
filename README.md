@@ -130,7 +130,7 @@ api.getUsers().then((res) => console.log(res))
 | `--remove-param,-rp` | boolean | `false` | 移除{.+}参数 |
 | `--remove-prefix-index,-rpi` | number | `-1` | 移除前缀索引 |
 | `--remove-dts,-rd` | boolean | `false` | 移除使用--js参数时生成的d.ts文件 |
-| `--axios-response-raw,-arr` | boolean | `false` | 定制响应，将AxiosResponse返回值转移到raw字段，根部字段自己定义 |
+| `--extract-response-raw,-err` | boolean | `false` | 提取响应，将AxiosResponse返回值转移到raw字段，根部字段自己定义 |
 
 扩展：[更多 swagger-typescript-api 配置选项](https://fig.io/manual/swagger-typescript-api)
 

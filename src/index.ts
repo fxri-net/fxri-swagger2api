@@ -72,7 +72,7 @@ async function onLoadParam() {
     removeParam: getParamKey(["--remove-param", "-rp"]),
     removePrefixIndex: getParamValue(["--remove-prefix-index", "-rpi"]),
     removeDts: getParamKey(["--remove-dts", "-rd"]),
-    axiosResponseRaw: getParamKey(["--axios-response-raw", "-arr"])
+    extractResponseRaw: getParamKey(["--extract-response-raw", "-err"])
   }
 }
 /** 加载配置 */
