@@ -2,16 +2,16 @@
 const { apiConfig, generateResponses, config } = it;
 %>
 
-import type { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType, AxiosResponse } from "axios";
+import type { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType, AxiosResponse as AxiosResponseRaw } from "axios";
 import axios from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
 
 <% if (config.param?.extractResponseRaw) { %>
 /** 提取响应 */
-export interface AxiosResponseRaw<T = any> {
+export interface AxiosResponse<T = any> {
   /** 原始数据 */
-  raw: AxiosResponse<T>;
+  raw: AxiosResponseRaw<T>;
 }
 
 <% } %>
@@ -117,8 +117,6 @@ export class HttpClient<SecurityDataType = unknown> {
         ...params
 <% if (config.unwrapResponseData) { %>
     }: FullRequestParams): Promise<T> => {
-<% } else if (config.param?.extractResponseRaw) { %>
-    }: FullRequestParams): Promise<AxiosResponseRaw<T>> => {
 <% } else { %>
     }: FullRequestParams): Promise<AxiosResponse<T>> => {
 <% } %>
@@ -146,8 +144,6 @@ export class HttpClient<SecurityDataType = unknown> {
             url: path,
 <% if (config.unwrapResponseData) { %>
         }).then(response => response.data);
-<% } else if (config.param?.extractResponseRaw) { %>
-        }).then(response => { raw: response });
 <% } else { %>
         });
 <% } %>

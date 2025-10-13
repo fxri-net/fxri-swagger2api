@@ -107,10 +107,37 @@ npx @fxri/swagger2api
 直接调用生成的API类方法：
 
 ```typescript
-import { Api } from "./index"
+import { Api } from "./api"
+/** 请求器 */
+export const request = new Api()
+request.getUsers().then((res) => console.log(res))
+```
 
-const api = new Api()
-api.getUsers().then((res) => console.log(res))
+### 4. 提取响应（如没有使用提取响应参数，则忽略该项）
+
+声明自定义的根部字段（以下字段为示例，请根据实际情况自行调整）：
+
+```typescript
+declare module "." {
+  interface AxiosResponseRaw<T = any> {
+    /** 状态代码 */
+    code: number
+    /** 提示信息 */
+    message: string
+    /** 响应数据 */
+    data: T["data"]
+  }
+}
+```
+
+根据已声明字段，配置对应的返回值：
+
+```typescript
+// 响应拦截
+client.instance.interceptors.response.use(
+  (response) => ({ code: 0, data: null, message: "", raw: response }),
+  (error) => ({ code: -1, data: null, message: error.message, raw: error })
+)
 ```
 
 每个方法会返回 Promise，可通过 async/await 或 .then() 处理响应。
@@ -131,7 +158,7 @@ api.getUsers().then((res) => console.log(res))
 | `--remove-prefix-index,-rpi` | number | `-1` | 移除前缀索引 |
 | `--remove-dts,-rd` | boolean | `false` | 移除使用--js参数时生成的d.ts文件 |
 | `--extract-request-query,-erq` | string | - | 提取参数，将query参数中的指定对象字段提取为根部字段，支持多选，用【,】分隔，每个接口只提取第一次命中的字段 |
-| `--extract-response-raw,-err` | boolean | `false` | 提取响应，将AxiosResponse返回值转移到raw字段，根部字段自己定义 |
+| `--extract-response-raw,-err` | boolean | `false` | 提取响应，将AxiosResponse返回值转移到raw字段，根部字段自行定义，使用该参数需在响应拦截中重新设计实际的返回值 |
 
 扩展：[更多 swagger-typescript-api 配置选项](https://fig.io/manual/swagger-typescript-api)
 

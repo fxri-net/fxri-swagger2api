@@ -1,6 +1,6 @@
 {
   "name": "@fxri/swagger2api",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "基于 swagger-typescript-api，将 Swagger 文档自动转为 TypeScript 格式的 API 文件。",
   "license": "MIT",
   "author": {
@@ -18,8 +18,8 @@
   ],
   "scripts": {
     "dev": "pnpm build:debug && node ./dist/cli.js",
-    "build": "NODE_ENV=production tsup",
-    "build:debug": "NODE_ENV=development tsup --config tsup.dev.config.ts",
+    "build": "cross-env NODE_ENV=production tsup",
+    "build:debug": "cross-env NODE_ENV=development tsup --config tsup.dev.config.ts",
     "release": "pnpm build && pnpm publish",
     "api": "pnpm dev --axios --responses --remove-prefix-index 0 --quick --extract-request-query param --extract-response-raw"
   },
@@ -39,6 +39,7 @@
     "@types/prompts": "^2.4.9",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "cross-env": "^10.1.0",
     "esbuild-plugin-copy": "^2.1.1",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.2",
@@ -46,7 +47,7 @@
     "tsup": "^8.5.0",
     "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@10.18.2",
+  "packageManager": "pnpm@10.18.0",
   "engines": {
     "node": ">=20"
   },
