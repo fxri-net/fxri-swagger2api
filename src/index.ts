@@ -5,7 +5,7 @@ import fs from "node:fs"
 import path from "node:path"
 import prompts from "prompts"
 import { generateApi } from "swagger-typescript-api"
-import { Defines, getParamKey, getParamValue, isUrl, saveFile } from "./utils"
+import { Defines, getDirname, getFilename, getParamKey, getParamValue, isUrl, saveFile } from "./utils"
 import { glob } from "glob"
 /** 配置集合 */
 const confs = {
@@ -28,9 +28,23 @@ function onExit(message?: string) {
 }
 /** 加载参数 */
 async function onLoadParam() {
+  /** 参数 */
+  datas.param = {
+    config: getParamValue(["--config", "-c"]),
+    configScan: getParamKey(["--config-scan", "-cs"]),
+    configAll: getParamKey(["--config-all", "-ca"]),
+    quick: getParamKey(["--quick", "-q"]),
+    convertGet: getParamKey(["--convert-get", "-cg"]),
+    removeParam: getParamKey(["--remove-param", "-rp"]),
+    removePrefixIndex: getParamValue(["--remove-prefix-index", "-rpi"]),
+    removeDts: getParamKey(["--remove-dts", "-rd"]),
+    extractRequestQuery: getParamValue(["--extract-request-query", "-erq"]),
+    extractResponseRaw: getParamKey(["--extract-response-raw", "-err"]),
+    template: path.resolve(getDirname(), "./templates")
+  }
   /** 配置 */
   datas.config = {
-    templates: getParamValue(["--templates", "-t"]) ?? "./src/templates", // 路径到包含模板的文件夹
+    templates: getParamValue(["--templates", "-t"]) ?? datas.param.template, // 路径到包含模板的文件夹
     defaultResponseAsSuccess: getParamKey(["--default-as-success", "-d"]), // 将“默认”响应状态码也用作成功响应
     generateResponses: getParamKey(["--responses", "-r"]), // 生成有关请求响应的附加信息
     generateUnionEnums: getParamKey("--union-enums"), // 生成所有“枚举”类型为联合类型 (T1 | T2 | TN)
@@ -62,19 +76,6 @@ async function onLoadParam() {
     sortTypes: getParamKey("--sort-types"), // 排序字段和类型（默认：false）
     extractEnums: getParamKey("--extract-enums") // 从内联接口提取所有枚举类型 将内容提取到 typescript 枚举构造中（默认：false）
   } as Parameters<typeof generateApi>["0"]
-  /** 参数 */
-  datas.param = {
-    config: getParamValue(["--config", "-c"]),
-    configScan: getParamKey(["--config-scan", "-cs"]),
-    configAll: getParamKey(["--config-all", "-ca"]),
-    quick: getParamKey(["--quick", "-q"]),
-    convertGet: getParamKey(["--convert-get", "-cg"]),
-    removeParam: getParamKey(["--remove-param", "-rp"]),
-    removePrefixIndex: getParamValue(["--remove-prefix-index", "-rpi"]),
-    removeDts: getParamKey(["--remove-dts", "-rd"]),
-    extractRequestQuery: getParamValue(["--extract-request-query", "-erq"]),
-    extractResponseRaw: getParamKey(["--extract-response-raw", "-err"])
-  }
 }
 /** 加载配置 */
 async function onLoadConfig() {

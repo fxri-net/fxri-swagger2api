@@ -40,6 +40,8 @@ export type Defines = {
       extractRequestQuery: string
       /** 提取响应，将AxiosResponse返回值转移到raw字段，根部字段自己定义 */
       extractResponseRaw: boolean
+      /** 模板路径 */
+      template: string
     }
     /** 枚举 */
     enum: { [key: string]: number }

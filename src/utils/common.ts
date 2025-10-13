@@ -1,4 +1,5 @@
 import fs from "node:fs"
+import url from "node:url"
 import path from "node:path"
 /** 数据集合 */
 const datas = {
@@ -86,4 +87,12 @@ export function saveFile(file, data) {
   }
   // 写入文件
   fs.writeFileSync(file, data)
+}
+/** 获取当前文件 */
+export function getFilename() {
+  return typeof require !== "undefined" && typeof module !== "undefined" ? __filename : url.fileURLToPath(import.meta.url)
+}
+/** 获取当前目录 */
+export function getDirname() {
+  return typeof require !== "undefined" && typeof module !== "undefined" ? __dirname : path.dirname(getFilename())
 }
