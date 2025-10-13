@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "pnpm build:debug && node ./dist/bin/index.js",
     "build": "NODE_ENV=production tsup",
-    "build:debug": "NODE_ENV=development tsup",
+    "build:debug": "NODE_ENV=development tsup --config tsup.debug.config.ts",
     "release": "pnpm build && pnpm publish",
     "api": "pnpm dev --axios --responses --remove-prefix-index 0"
   },

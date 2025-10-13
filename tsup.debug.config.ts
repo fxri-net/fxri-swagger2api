@@ -1,11 +1,12 @@
 import { defineConfig } from "tsup"
 
 export default defineConfig({
-  entry: ["src/index.ts", "src/bin/index.ts"], // 入口文件
+  entry: ["src/bin/index.ts"], // 入口文件
+  outDir: "dist/bin", // 输出目录
   splitting: false, // 是否开启代码分割
   clean: true, // 是否清理dist目录
-  dts: true, // 是否生成.d.ts类型文件
-  format: ["cjs", "esm"], // 输出CommonJS和ESM双格式
+  dts: false, // 是否生成.d.ts类型文件
+  format: ["esm"], // 输出ESM格式
   minify: process.env.NODE_ENV === "production",
   target: "node20" // Node.js版本目标
 })
