@@ -77,7 +77,7 @@ const describeReturnType = () => {
 
     switch(config.httpClientType) {
         case HTTP_CLIENT.AXIOS: {
-          return config.param?.extractResponseRaw ? `Promise<AxiosResponseRaw<${type}>>` : `Promise<AxiosResponse<${type}>>`
+          return `Promise<AxiosResponse<${type}>>`
         }
         default: {
           return `Promise<HttpResponse<${type}, ${errorType}>`
