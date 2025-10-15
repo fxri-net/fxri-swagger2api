@@ -4,73 +4,64 @@ import path from "node:path"
 /** 数据集合 */
 const datas = {
   /** 参数 */
-  param: process.argv.filter((_item, index) => index > 1),
-  /** 已使用 */
-  used: {} as { [key: number]: boolean }
+  param: process.argv.filter((_item, index) => index > 1)
 }
 /**
  * 获取参数
  * @param name 参数名称
- * @param next true取索引值，false取索引键
- * @param use 配置已使用
+ * @param type 类型，key:键名、布尔型，value:键值，array:数组
+ * @param param 参数
  * @return 选中的参数
  */
-export function getParam(name: string | string[], next = true, use = true) {
+export function getParam(name: string | string[], type = "value" as "key" | "value" | "array", param: { [key: string]: any } = {}) {
   // 处理名称
   if (!Array.isArray(name)) name = [name]
   // 配置数据
-  let data: boolean | string
+  let data: boolean | string | string[]
   // 查询参数
   datas.param.forEach((item, index) => {
     // 查询索引
     if (!name.includes(item)) {
       // 空值
       return
-    } else if (next) {
-      // 取索引值
+    } else if (["value"].includes(type)) {
+      // 取键值
       data = datas.param[index + 1]
-      // 配置已使用
-      use && Object.assign(datas.used, { [index + 1]: true })
-    } else if (["true", "false"].includes(datas.param[index + 1])) {
-      // 取索引键，但存在索引值的话，则取索引值
-      data = datas.param[index + 1].toLowerCase() == "true"
-      // 配置已使用
-      use && Object.assign(datas.used, { [index + 1]: true })
+    } else if (["array"].includes(type)) {
+      // 取数组
+      data = Array.from({ length: param.length ?? 1 }).map((_item2, index2) => datas.param[index + index2 + 1])
     } else {
-      // 取索引键
-      data = true
+      // 取键名
+      data = !["false"].includes(datas.param[index + 1])
     }
-    // 配置已使用
-    use && Object.assign(datas.used, { [index]: true })
   })
   // 返回参数
   return data
 }
 /**
- * 获取参数索引键
+ * 获取参数键名
  * @param name 参数名称
- * @param use 配置已使用
  * @return 选中的参数
  */
-export function getParamKey(name: string | string[], use = true) {
-  return getParam(name, false, use) as boolean
+export function getPKey(name: string | string[]) {
+  return getParam(name, "key") as boolean
 }
 /**
- * 获取参数索引值
+ * 获取参数键值
  * @param name 参数名称
- * @param use 配置已使用
  * @return 选中的参数
  */
-export function getParamValue(name: string | string[], use = true) {
-  return getParam(name, true, use) as string
+export function getPValue(name: string | string[]) {
+  return getParam(name, "value") as string
 }
 /**
- * 获取参数列表
- * @param used 是否已使用
- * @return 参数数组
+ * 获取参数数组
+ * @param name 参数名称
+ * @param param 参数
+ * @return 选中的参数
  */
-export function getParamList(used?: boolean) {
-  return typeof used == "boolean" ? datas.param.filter((_item, index) => (used ? datas.used[index] : !datas.used[index])) : datas.param
+export function getPArray(name: string | string[], param: { [key: string]: any } = {}) {
+  return (getParam(name, "array", param) ?? []) as string[]
 }
 /**
  * 保存文件

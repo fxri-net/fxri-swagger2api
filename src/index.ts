@@ -5,7 +5,7 @@ import fs from "node:fs"
 import path from "node:path"
 import prompts from "prompts"
 import { generateApi } from "swagger-typescript-api"
-import { Defines, getDirname, getFilename, getParamKey, getParamValue, isUrl, saveFile } from "./utils"
+import { Defines, getDirname, getPArray, getPKey, getPValue, isUrl, saveFile } from "./utils"
 import { glob } from "glob"
 /** 配置集合 */
 const confs = {
@@ -30,51 +30,52 @@ function onExit(message?: string) {
 async function onLoadParam() {
   /** 参数 */
   datas.param = {
-    config: getParamValue(["--config", "-c"]),
-    configScan: getParamKey(["--config-scan", "-cs"]),
-    configAll: getParamKey(["--config-all", "-ca"]),
-    quick: getParamKey(["--quick", "-q"]),
-    convertGet: getParamKey(["--convert-get", "-cg"]),
-    removeParam: getParamKey(["--remove-param", "-rp"]),
-    removePrefixIndex: getParamValue(["--remove-prefix-index", "-rpi"]),
-    removeDts: getParamKey(["--remove-dts", "-rd"]),
-    extractRequestQuery: getParamValue(["--extract-request-query", "-erq"]),
-    extractResponseRaw: getParamKey(["--extract-response-raw", "-err"]),
+    config: getPValue(["--config", "-c"]),
+    configScan: getPKey(["--config-scan", "-cs"]),
+    configAll: getPKey(["--config-all", "-ca"]),
+    quick: getPKey(["--quick", "-q"]),
+    replaceTags: getPArray(["--replace-tags", "-rt"], { length: 2 }),
+    convertGet: getPKey(["--convert-get", "-cg"]),
+    removeParam: getPKey(["--remove-param", "-rp"]),
+    removePrefixIndex: getPValue(["--remove-prefix-index", "-rpi"]),
+    removeDts: getPKey(["--remove-dts", "-rd"]),
+    extractRequestQuery: getPValue(["--extract-request-query", "-erq"]),
+    extractResponseRaw: getPKey(["--extract-response-raw", "-err"]),
     template: path.resolve(getDirname(), "./templates")
   }
   /** 配置 */
   datas.config = {
-    templates: getParamValue(["--templates", "-t"]) ?? datas.param.template, // 路径到包含模板的文件夹
-    defaultResponseAsSuccess: getParamKey(["--default-as-success", "-d"]), // 将“默认”响应状态码也用作成功响应
-    generateResponses: getParamKey(["--responses", "-r"]), // 生成有关请求响应的附加信息
-    generateUnionEnums: getParamKey("--union-enums"), // 生成所有“枚举”类型为联合类型 (T1 | T2 | TN)
-    addReadonly: getParamKey("--add-readonly"), // 生成只读属性
-    generateRouteTypes: getParamKey("--route-types"), // 生成 API 路由的类型定义
-    generateClient: !getParamKey("--no-client"), // 不要生成API类
-    enumNamesAsValues: getParamKey("--enum-names-as-values"), // 使用'x-enumNames'中的值作为枚举值（而不仅仅是作为键）
-    extractRequestParams: getParamKey("--extract-request-params"), // 提取请求参数到数据合同
-    extractRequestBody: getParamKey("--extract-request-body"), // 将请求体类型提取到数据契约
-    extractResponseBody: getParamKey("--extract-response-body"), // 将响应体类型提取到数据契约
-    extractResponseError: getParamKey("--extract-response-error"), // 提取响应错误类型到数据合同
-    modular: getParamKey("--modular"), // 生成http客户端、数据契约和路由的分离文件
-    toJS: getParamKey("--js"), // 生成带有声明文件的js api模块
-    moduleNameIndex: Number(getParamValue("--module-name-index") ?? 0), // 确定用于路由分离的路径索引
-    moduleNameFirstTag: getParamKey("--module-name-first-tag"), // 根据第一个标签拆分路线
-    httpClientType: getParamKey("--axios") ? "axios" : "fetch", // 生成 axios http 客户端
-    unwrapResponseData: getParamKey("--unwrap-response-data"), // 从响应中提取数据项
-    disableThrowOnError: getParamKey("--disable-throw-on-error"), // 当 response.ok 不为真时，不要抛出错误（默认：false）
-    singleHttpClient: getParamKey("--single-http-client"), // 能够将HttpClient实例传递给Api构造函数（默认：false）
-    silent: getParamKey("--silent"), // 仅将错误输出到控制台
-    defaultResponseType: getParamValue("--default-response") ?? "void", // 默认类型为无响应模式
-    typePrefix: getParamValue("--type-prefix") ?? "", // 数据合同名称前缀
-    typeSuffix: getParamValue("--type-suffix") ?? "", // 数据合同名称后缀
-    cleanOutput: getParamKey("--clean-output"), // 在生成API之前清理输出文件夹。 警告：可能会导致数据丢失（默认：false）
-    ...(getParamValue("--api-class-name") ? { apiClassName: getParamValue("--api-class-name") } : {}), // API类名
-    patch: getParamKey("--patch"), // 修正Swagger源定义中的小错误（默认：false）
-    debug: getParamKey("--debug"), // 此工具内进程的附加信息（默认：false）
-    anotherArrayType: getParamKey("--another-array-type"), // 生成数组类型为 Array<Type>（默认为 Type[]）（默认：false）
-    sortTypes: getParamKey("--sort-types"), // 排序字段和类型（默认：false）
-    extractEnums: getParamKey("--extract-enums") // 从内联接口提取所有枚举类型 将内容提取到 typescript 枚举构造中（默认：false）
+    templates: getPValue(["--templates", "-t"]) ?? datas.param.template, // 路径到包含模板的文件夹
+    defaultResponseAsSuccess: getPKey(["--default-as-success", "-d"]), // 将“默认”响应状态码也用作成功响应
+    generateResponses: getPKey(["--responses", "-r"]), // 生成有关请求响应的附加信息
+    generateUnionEnums: getPKey("--union-enums"), // 生成所有“枚举”类型为联合类型 (T1 | T2 | TN)
+    addReadonly: getPKey("--add-readonly"), // 生成只读属性
+    generateRouteTypes: getPKey("--route-types"), // 生成 API 路由的类型定义
+    generateClient: !getPKey("--no-client"), // 不要生成API类
+    enumNamesAsValues: getPKey("--enum-names-as-values"), // 使用'x-enumNames'中的值作为枚举值（而不仅仅是作为键）
+    extractRequestParams: getPKey("--extract-request-params"), // 提取请求参数到数据合同
+    extractRequestBody: getPKey("--extract-request-body"), // 将请求体类型提取到数据契约
+    extractResponseBody: getPKey("--extract-response-body"), // 将响应体类型提取到数据契约
+    extractResponseError: getPKey("--extract-response-error"), // 提取响应错误类型到数据合同
+    modular: getPKey("--modular"), // 生成http客户端、数据契约和路由的分离文件
+    toJS: getPKey("--js"), // 生成带有声明文件的js api模块
+    moduleNameIndex: Number(getPValue("--module-name-index") ?? 0), // 确定用于路由分离的路径索引
+    moduleNameFirstTag: getPKey("--module-name-first-tag"), // 根据第一个标签拆分路线
+    httpClientType: getPKey("--axios") ? "axios" : "fetch", // 生成 axios http 客户端
+    unwrapResponseData: getPKey("--unwrap-response-data"), // 从响应中提取数据项
+    disableThrowOnError: getPKey("--disable-throw-on-error"), // 当 response.ok 不为真时，不要抛出错误（默认：false）
+    singleHttpClient: getPKey("--single-http-client"), // 能够将HttpClient实例传递给Api构造函数（默认：false）
+    silent: getPKey("--silent") ?? true, // 仅将错误输出到控制台
+    defaultResponseType: getPValue("--default-response") ?? "void", // 默认类型为无响应模式
+    typePrefix: getPValue("--type-prefix") ?? "", // 数据合同名称前缀
+    typeSuffix: getPValue("--type-suffix") ?? "", // 数据合同名称后缀
+    cleanOutput: getPKey("--clean-output"), // 在生成API之前清理输出文件夹。 警告：可能会导致数据丢失（默认：false）
+    ...(getPValue("--api-class-name") ? { apiClassName: getPValue("--api-class-name") } : {}), // API类名
+    patch: getPKey("--patch"), // 修正Swagger源定义中的小错误（默认：false）
+    debug: getPKey("--debug"), // 此工具内进程的附加信息（默认：false）
+    anotherArrayType: getPKey("--another-array-type"), // 生成数组类型为 Array<Type>（默认为 Type[]）（默认：false）
+    sortTypes: getPKey("--sort-types"), // 排序字段和类型（默认：false）
+    extractEnums: getPKey("--extract-enums") // 从内联接口提取所有枚举类型 将内容提取到 typescript 枚举构造中（默认：false）
   } as Parameters<typeof generateApi>["0"]
 }
 /** 加载配置 */
@@ -157,6 +158,13 @@ async function onGenerateApi(data: Defines["data"]) {
   // 处理数据
   Object.entries(data.paths).forEach((item) => {
     Object.keys(item[1]).forEach((item2) => {
+      // 配置标签
+      if (datas.param.replaceTags.length) {
+        // 替换标签
+        data.paths[item[0]][item2].tags = data.paths[item[0]][item2].tags?.map((item) =>
+          item.replace(new RegExp(`^${datas.param.replaceTags[0]}$`, "g"), datas.param.replaceTags[1] ?? "")
+        )
+      }
       // 配置操作id
       let id = `${item[0]}/${item2}`
       // 转换无{.+}get为query
@@ -192,6 +200,10 @@ async function onGenerateApi(data: Defines["data"]) {
     ...datas.config,
     ...{ param: datas.param }
   })
+  console.log("完成：", path.resolve(confs.param.output, `${confs.param.name}${!datas.config.toJS ? ".ts" : ".js"}`))
+  if (datas.config.toJS) {
+    console.log("完成：", path.resolve(confs.param.output, `${confs.param.name}.d.ts`))
+  }
   // 删除文档
   fs.unlinkSync(datas.docFile)
   // 移除使用--js参数时生成的d.ts文件

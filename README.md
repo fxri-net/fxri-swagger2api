@@ -65,13 +65,13 @@ yarn add @fxri/swagger2api
 ```json
 {
   "scripts": {
-    "api": "swagger2api --axios --responses --remove-prefix-index 0 --quick"
+    "api": "swagger2api --axios --responses -q -rpi 0 -err"
   }
 }
 
 {
   "scripts": {
-    "api": "npx @fxri/swagger2api --axios --responses --remove-prefix-index 0 --quick"
+    "api": "npx @fxri/swagger2api --axios --responses -q -rpi 0 -err"
   }
 }
 ```
@@ -153,6 +153,7 @@ client.instance.interceptors.response.use(
 | `--config,-c` | string | `'saconfig.json'` | 填写配置文件路径，支持多选，用【,】分隔 |
 | `--config-all,-ca` | boolean | `false` | 加载全部配置文件，不进行选择 |
 | `--config-scan,-cs` | boolean | `true` | 扫描全部配置文件，并提供选择列表 |
+| `--replace-tags,-rt` | string[] | - | 替换标签，2个参数，第1个正则表达式（已包含^$头尾），第2个替换字符串 |
 | `--convert-get,-cg` | boolean | `false` | 转换无{.+}get为query |
 | `--remove-param,-rp` | boolean | `false` | 移除{.+}参数 |
 | `--remove-prefix-index,-rpi` | number | `-1` | 移除前缀索引 |
@@ -186,6 +187,14 @@ npx @fxri/swagger2api [--config,-c <path>]
 npx swagger2api [--remove-prefix-index,-rpi <number>]
 
 npx @fxri/swagger2api [--remove-prefix-index,-rpi <number>]
+```
+
+```bash
+# 替换标签，2个参数，第1个正则表达式（已包含^$头尾），第2个替换字符串
+
+npx swagger2api [--replace-tags,-rt <regexp> <substr>]
+
+npx @fxri/swagger2api [--replace-tags,-rt <regexp> <substr>]
 ```
 
 ## 🤝 贡献

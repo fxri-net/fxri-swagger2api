@@ -28,6 +28,8 @@ export type Defines = {
       configAll: boolean
       /** 快速模式 */
       quick: boolean
+      /** 替换标签 */
+      replaceTags: string[]
       /** 转换无{.+}get为query */
       convertGet: boolean
       /** 移除{.+}参数 */
