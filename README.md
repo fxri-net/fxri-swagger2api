@@ -135,8 +135,8 @@ declare module "." {
 ```typescript
 // 响应拦截
 client.instance.interceptors.response.use(
-  (response) => ({ code: 0, data: null, message: "", raw: response }),
-  (error) => ({ code: -1, data: null, message: error.message, raw: error })
+  (response) => ({ code: 0, message: "", data: null, raw: response }),
+  (error) => ({ code: -1, message: error.message, data: null, raw: error })
 )
 ```
 
